@@ -1,6 +1,14 @@
-import { CardContainer, CardBackground } from "./product-card.styles";
+import {
+  CardContainer,
+  CardBackground,
+  ImageContainer,
+  TitleContainer,
+  ProductImage,
+} from "./product-card.styles";
 import { Image } from "react-native";
 import { Text } from "../typography/text.component";
+import { FadeInView } from "../animations/fade.animation";
+import { CustomIcon, RowContainer } from "../main-styles";
 
 export const ProductCard = ({
   product,
@@ -9,22 +17,28 @@ export const ProductCard = ({
   product?: any;
   onPress?: any;
 }) => {
-  const { name } = product;
+  const { name, price } = product;
 
   return (
     <CardContainer onPress={onPress}>
       <CardBackground>
-        {/* <Image
-        source={{
-          uri: product.image,
-        }}
-        style={{
-          width: "100%",
-          height: "100%",
-          resizeMode: "cover",
-        }}
-      /> */}
-        <Text variant="title">{name}</Text>
+        <FadeInView>
+          <ImageContainer>
+            <ProductImage source={{ uri: product.avatar }} />
+          </ImageContainer>
+          <TitleContainer>
+            <Text variant="white">{name}</Text>
+            <RowContainer>
+              <Text variant="white">{`$${price}`}</Text>
+              <CustomIcon
+                iconName="pen"
+                iconLbr="FontAwesome5"
+                size={14}
+                color="#FFFFFF"
+              />
+            </RowContainer>
+          </TitleContainer>
+        </FadeInView>
       </CardBackground>
     </CardContainer>
   );

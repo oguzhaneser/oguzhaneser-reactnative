@@ -28,6 +28,12 @@ const white = (theme: any) => `
     font-size: ${theme.fontSizes.title};
 `;
 
+const black = (theme: any) => `
+    color: ${theme.colors.text.black};
+    font-family: ${theme.fonts.gilroyExtraBold};
+    font-size: ${theme.fontSizes.title};
+`;
+
 const caption = (theme: any) => `
     font-size: ${theme.fontSizes.caption};
     font-weight: ${theme.fontWeights.bold};
@@ -75,6 +81,7 @@ const variants = {
   error,
   hint,
   white,
+  black,
   title,
   header,
   centered,
@@ -86,6 +93,7 @@ const variants = {
 export const Text = styled.Text`
   ${({ theme }) => defaultTextStyles(theme)}
   ${({ variant, theme }: { variant: string; theme: any }) =>
+    //@ts-ignore
     variants[variant](theme)}
 `;
 

@@ -1,34 +1,23 @@
 import styled from "styled-components/native";
 
-export const HeaderContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+export const CategoriesContainer = styled.View`
+  height: 60px;
+  margin-horizontal: -10px;
+  margin-vertical: 10px;
 `;
 
-export const CategoriesContainer = styled.FlatList.attrs({
+export const CategoriesList = styled.FlatList.attrs({
   horizontal: true,
   showsHorizontalScrollIndicator: false,
   contentContainerStyle: {
     paddingHorizontal: 10,
+    alignItems: "center",
   },
-})`
-  margin-horizontal: -10px;
-  padding-vertical: 10px;
-  height: 100px;
-`;
-
-export const ProductsContainer = styled.FlatList.attrs({
-  numColumns: 2,
-  showsVerticalScrollIndicator: false,
-  contentContainerStyle: {
-    paddingHorizontal: 10,
-  },
-})`
-  margin-horizontal: -10px;
-`;
+})``;
 
 export const CategoryButton = styled.TouchableOpacity`
+  height: ${({ isSelected }: { isSelected: boolean }) =>
+    isSelected ? "60px" : "50px"};
   margin-right: ${({ theme }: { theme: any }) => theme.space[2]};
   padding: 16px;
   border-radius: 8px;
@@ -37,7 +26,7 @@ export const CategoryButton = styled.TouchableOpacity`
     isSelected,
   }: {
     theme: any;
-    isSelected?: boolean;
+    isSelected: boolean;
   }) => (isSelected ? theme.colors.bg.primary : theme.colors.bg.secondary)};
   justify-content: center;
   align-items: center;
