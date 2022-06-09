@@ -18,9 +18,11 @@ function capitalizeOnlyFirstLetter(str: string) {
 export const Categories = ({
   onPressHandle,
   selectedCategory,
+  showAll = true,
 }: {
   onPressHandle: any;
   selectedCategory: string;
+  showAll?: boolean;
 }) => {
   const { categories, categoriesLoading, categoriesError, getCategories } =
     useContext(CategoriesContext);
@@ -32,7 +34,11 @@ export const Categories = ({
   return (
     <CategoriesContainer>
       <CategoriesList
-        data={categories}
+        data={
+          showAll
+            ? categories
+            : categories.filter((category: any) => category.id > 0)
+        }
         keyExtractor={(item: any) => item.id.toString()}
         refreshing={categoriesLoading}
         renderItem={({ item }: { item: any }) => (

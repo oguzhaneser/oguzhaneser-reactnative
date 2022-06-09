@@ -73,6 +73,11 @@ const h3 = (theme: any) => `
     align-self: center;
     `;
 
+const description = (theme: any) => `
+    font-size: ${theme.fontSizes.title};
+    margin-top: 10px;
+    `;
+
 const variants = {
   brand,
   body,
@@ -87,6 +92,7 @@ const variants = {
   centered,
   h4,
   h3,
+  description,
 };
 
 // Özelleştirebileceğimiz kendi text componentimiz.

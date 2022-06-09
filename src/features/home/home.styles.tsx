@@ -22,7 +22,6 @@ export const ProductsList = styled.FlatList.attrs({
 
 export const SearchContainer = styled.View`
   width: 100%;
-  margin-top: 10px;
 `;
 
 export const AddProductButton = styled.TouchableOpacity`

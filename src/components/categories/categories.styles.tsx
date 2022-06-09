@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 export const CategoriesContainer = styled.View`
   height: 60px;
   margin-horizontal: -10px;
-  margin-vertical: 10px;
+  z-index: 1;
 `;
 
 export const CategoriesList = styled.FlatList.attrs({
@@ -16,10 +16,9 @@ export const CategoriesList = styled.FlatList.attrs({
 })``;
 
 export const CategoryButton = styled.TouchableOpacity`
-  height: ${({ isSelected }: { isSelected: boolean }) =>
-    isSelected ? "60px" : "50px"};
   margin-right: ${({ theme }: { theme: any }) => theme.space[2]};
-  padding: 16px;
+  padding: ${({ isSelected }: { isSelected: boolean }) =>
+    isSelected ? "14px" : "10px"}; };
   border-radius: 8px;
   background-color: ${({
     theme,

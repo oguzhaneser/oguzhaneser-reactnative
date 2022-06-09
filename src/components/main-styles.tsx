@@ -19,6 +19,12 @@ export const RowContainer = styled.View`
   align-items: center;
 `;
 
+export const CenteredContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const SafeArea = styled(SafeAreaView).attrs({
   edges: ["top", "right", "left"],
 })`
@@ -62,8 +68,10 @@ export const CustomIcon = styled(
 
 export const CustomInput = styled.TextInput`
   width: 100%;
-  height: 50px;
-  padding: 0 16px;
+  height: ${({ multiline, numberOfLines }) =>
+    multiline ? (numberOfLines ? numberOfLines * 50 : 100) : 50}px;
+  padding: 10px 16px;
+  margin-top: 10px;
   border-radius: 8px;
   background-color: ${({ theme }: { theme: any }) => theme.colors.bg.primary};
   font-size: 16px;

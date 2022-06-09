@@ -19,6 +19,7 @@ export const CategoriesContextProvider = ({ children }: { children: any }) => {
 
     getCategoriesRequest()
       .then((response: any) => {
+        response.unshift({ id: 0, name: "All" });
         setCategories(response);
       })
       .catch((error) => {

@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState, useCallback } from "react";
-import { useFocusEffect } from "@react-navigation/native";
+import { useContext, useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 
 import { Text } from "../../components/typography/text.component";
@@ -20,20 +19,13 @@ import {
 } from "./home.styles";
 
 import { ProductsContext } from "../../services/products/products.context";
-import { CategoriesContext } from "../../services/categories/categories.context";
 
 import { Categories } from "../../components/categories/categories.component";
-
-function capitalizeOnlyFirstLetter(str: string) {
-  const capitalized = str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-
-  return capitalized;
-}
+import { API_URL } from "../../services/connections";
 
 export const HomeScreen = ({ navigation }: { navigation: any }) => {
   const { products, productsLoading, productsError, getProducts } =
     useContext(ProductsContext);
-  const { categories, setCategories } = useContext(CategoriesContext);
 
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -52,24 +44,6 @@ export const HomeScreen = ({ navigation }: { navigation: any }) => {
   useEffect(() => {
     setFilteredProducts(products);
   }, [products]);
-
-  useFocusEffect(
-    useCallback(() => {
-      //@ts-ignore
-      if (categories.length > 0 && categories[0].id !== 0) {
-        let newCategories = categories;
-        newCategories.unshift({
-          //@ts-ignore
-          id: 0,
-          //@ts-ignore
-          name: "All",
-        });
-
-        //@ts-ignore
-        setCategories(newCategories);
-      }
-    }, [])
-  );
 
   useEffect(() => {
     if (selectedCategory === "All") {
@@ -105,7 +79,7 @@ export const HomeScreen = ({ navigation }: { navigation: any }) => {
     <SafeArea>
       <MainContainer>
         <HeaderContainer>
-          <Text variant="title">Eşer Store</Text>
+          <Text variant="title">UPayments Store</Text>
           <TouchableOpacity
             onPress={() => {
               setSearchVisibility(!searchVisibility);
@@ -139,7 +113,24 @@ export const HomeScreen = ({ navigation }: { navigation: any }) => {
             data={filteredProducts}
             keyExtractor={(item: any) => item.id.toString()}
             renderItem={({ item }: { item: any }) => (
-              <ProductCard product={item} onPress={() => console.log(item)} />
+              <ProductCard
+                product={item}
+                onPress={() => {
+                  //delete for mistakes
+                  // fetch(`${API_URL}products/${item.id}`, {
+                  //   method: "DELETE",
+                  // })
+                  //   .then((response) => response.json())
+                  //   .then((data) => {
+                  //     console.log(data);
+                  //   })
+                  //   .catch((error) => {
+                  //     console.log(error);
+                  //   });
+
+                  navigation.navigate("Detail", { productId: item.id });
+                }}
+              />
             )}
             refreshing={productsLoading}
             onRefresh={() => getProducts()}

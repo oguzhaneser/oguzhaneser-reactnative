@@ -1,6 +1,10 @@
-import { useState, useContext, useEffect, useCallback } from "react";
-import { useFocusEffect } from "@react-navigation/native";
-import { TouchableOpacity, Button } from "react-native";
+import { useState, useContext } from "react";
+import {
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+  ScrollView,
+} from "react-native";
 import { Text } from "../../components/typography/text.component";
 import {
   MainContainer,
@@ -10,49 +14,124 @@ import {
 } from "../../components/main-styles";
 import { HeaderContainer } from "../home/home.styles";
 import { Categories } from "../../components/categories/categories.component";
-import { CategoriesContext } from "../../services/categories/categories.context";
+import { CategoryButton } from "../../components/categories/categories.styles";
+import { FadeInView } from "../../components/animations/fade.animation";
+import { ProductsContext } from "../../services/products/products.context";
+
+const defaultProductDTO = {
+  name: "",
+  price: 0,
+  description: "",
+  category: "",
+  avatar: "",
+};
 
 export const NewProductScreen = ({ navigation }: { navigation: any }) => {
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const { categories, setCategories } = useContext(CategoriesContext);
+  const [productDTO, setProductDTO] = useState(defaultProductDTO);
 
-  const handleCategoryPress = (category: string) => {
-    setSelectedCategory(category);
+  const { addProductLoading, addProductError, addProduct } =
+    useContext(ProductsContext);
+
+  const handleChange = (name: string, value: string) => {
+    setProductDTO({ ...productDTO, [name]: value });
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      //@ts-ignore
-      if (categories.length > 0 && categories[0].id === 0) {
-        let newCategories = categories;
-        newCategories.shift();
+  const handleCategoryPress = (category: string) => {
+    setProductDTO({ ...productDTO, category });
+  };
 
-        //@ts-ignore
-        setCategories([]);
-        //@ts-ignore
-        setCategories(newCategories);
-        //@ts-ignore
-        setSelectedCategory(newCategories[0].name);
-      }
-    }, [])
-  );
+  const handleSubmit = () => {
+    let errors = [];
+
+    if (productDTO.name.length < 3) {
+      errors.push("Name must be at least 3 characters long.");
+    }
+    if (!productDTO.price || isNaN(productDTO.price)) {
+      errors.push("Price must be provided. And must be a number.");
+    }
+    if (!productDTO.description) {
+      errors.push("Description must be provided.");
+    }
+    if (!productDTO.avatar || !productDTO.avatar.startsWith("http")) {
+      errors.push("Image must be provided and must start with http.");
+    }
+    if (!productDTO.category) {
+      errors.push("Category must be selected.");
+    }
+
+    if (errors.length > 0) {
+      Alert.alert("Error", errors.join("\n"));
+    } else {
+      addProduct(productDTO);
+      navigation.navigate("Home");
+    }
+  };
 
   return (
     <SafeArea>
-      <MainContainer>
-        <HeaderContainer>
-          <Text variant="title">New Product</Text>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <CustomIcon iconLbr="Ionicons" iconName="caret" size={26} />
-          </TouchableOpacity>
-        </HeaderContainer>
+      <ScrollView>
+        <MainContainer>
+          <FadeInView>
+            <HeaderContainer>
+              <Text variant="title">New Product</Text>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <CustomIcon
+                  iconLbr="Ionicons"
+                  iconName="arrow-undo"
+                  size={26}
+                />
+              </TouchableOpacity>
+            </HeaderContainer>
 
-        <Text variant="body">Selected Category: {selectedCategory}</Text>
-        <Categories
-          onPressHandle={handleCategoryPress}
-          selectedCategory={selectedCategory}
-        />
-      </MainContainer>
+            <CustomInput
+              placeholder="Title"
+              onChangeText={(text: any) => handleChange("name", text)}
+            />
+
+            <CustomInput
+              placeholder="Price"
+              onChangeText={(text: any) =>
+                !isNaN(text) && handleChange("price", text)
+              }
+            />
+
+            <CustomInput
+              placeholder="Description"
+              onChangeText={(text: any) => handleChange("description", text)}
+              multiline={true}
+              numberOfLines={2}
+            />
+
+            <CustomInput
+              placeholder="Image URL"
+              onChangeText={(text: any) =>
+                handleChange("avatar", text.toLowerCase())
+              }
+            />
+
+            <Text variant="description">
+              Selected Category: {productDTO.category}
+            </Text>
+            <Categories
+              onPressHandle={handleCategoryPress}
+              selectedCategory={productDTO.category}
+              showAll={false}
+            />
+
+            <CategoryButton
+              onPress={addProductLoading ? () => {} : () => handleSubmit()}
+              isSelected={false}
+              style={{ marginRight: 0 }}
+            >
+              {addProductLoading ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                <Text variant="white">Add Product</Text>
+              )}
+            </CategoryButton>
+          </FadeInView>
+        </MainContainer>
+      </ScrollView>
     </SafeArea>
   );
 };

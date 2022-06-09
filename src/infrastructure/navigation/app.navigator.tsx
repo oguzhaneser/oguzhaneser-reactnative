@@ -23,16 +23,7 @@ export const AppNavigator = () => (
         >
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="NewProduct" component={NewProductScreen} />
-          <Stack.Screen
-            name="Detail"
-            component={DetailScreen}
-            options={{
-              presentation: "modal",
-              animation: "fade_from_bottom",
-              headerShown: true,
-              title: "Product Detail",
-            }}
-          />
+          <Stack.Screen name="Detail" component={DetailScreen} />
         </Stack.Navigator>
       </ProductsContextProvider>
     </CategoriesContextProvider>
