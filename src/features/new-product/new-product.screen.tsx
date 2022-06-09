@@ -24,6 +24,7 @@ const defaultProductDTO = {
   description: "",
   category: "",
   avatar: "",
+  developerEmail: "06.oguzhan.eser@gmail.com",
 };
 
 export const NewProductScreen = ({ navigation }: { navigation: any }) => {
